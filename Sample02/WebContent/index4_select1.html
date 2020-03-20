@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <select v-model="selected">
+            <option disabled value="">Please select one</option> <!--disabled : 값이 안나타남-->
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>선택: {{selected}}</span>
+    </div>
+    
+    
+
+<script>    
+// v-model
+new Vue({
+    el:'#app',
+    data:{
+        selected:'a'
+    }
+})
+</script>
+
+</body>
+</html>

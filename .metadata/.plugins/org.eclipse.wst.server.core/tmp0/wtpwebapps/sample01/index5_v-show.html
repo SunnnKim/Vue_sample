@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+
+<div id="app">
+    <div v-show="isLoginBoxShow"><!--보이는 상태 -->
+        <p>비 로그인 상태 화면</p>
+        <button onclick="login()">로그인</button>
+    </div>
+    <div v-show="!isLoginBoxShow"><!--보이지 않는 상태 (v-show:false)-->
+        <p>로그인 상태 화면</p>
+        <button onclick="logout()">로그아웃</button>
+    </div>
+</div>
+
+
+<script>
+// 조건부 랜더링 : 로그인, 로그아웃 화면일 때 다른 html요소 보이도록 설정
+
+// 외부에서 접근해야 하기 때문에 변수로 설정한다
+var app = new Vue({
+    el:'#app',
+    data:{
+        isLoginBoxShow:true // 초기 값을 true로 설정
+    }
+});
+function login(){
+    app.isLoginBoxShow = false;
+}
+function logout(){
+    app.isLoginBoxShow = true;    
+}
+
+</script>
+
+    
+</body>
+</html>

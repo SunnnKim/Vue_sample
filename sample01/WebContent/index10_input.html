@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+
+<div id="app">
+    <h1>{{ value }}</h1>
+    <input type="text" id="input" :value='value' @keypress='setValue()'>
+    <button @click='setDefault()'>기본값</button>
+</div>
+
+
+<script>
+// input box
+// :value : 인풋박스 value 설정
+// @keypress : 키보드 눌림
+// 한글은 키보드 인코딩방식 때문에 안됨
+var app = new Vue({
+    el:'#app',
+    data: {
+        value:'기본값'
+    },
+    methods: {
+        setValue: function(){
+           // this.value = '';
+           // 또는
+            app.value = document.getElementById('input').value;
+        },
+        setDefault: function(){
+            this.value = "기본값";
+        }
+    }
+})
+
+</script>
+    
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <ul>
+            <span v-for=' n in 100 '>
+                {{ n }}
+            </span>
+        </ul>
+    </div>
+
+    <div id='app1'>
+        <ul v-for=' i in 9 ' style="display: inline-block;">
+            <li v-for='j in 9'> {{ i }} * {{ j }} = {{ i * j }}</li>
+        </ul>
+    </div>
+    <ul id="app2">
+        <li v-for='item in items'>
+            {{ item.msg }}
+        </li>
+    </ul>
+
+<script>
+    // for문
+    // v-for=' 변수 in 마지막 값'   (변수의 값부터 마지막 값까지    )
+    new Vue({
+        el:'#app',
+        data:{
+            n:1
+        }
+    })
+    new Vue({
+        el:'#app1',
+        data:{
+            i:1, j:1
+        }
+    })
+     new Vue({
+        el:'#app2',
+        data:{
+            items:[
+                {seq:'1', msg:'사과'},
+                {seq:'2', msg:'배'},
+                {seq:'3', msg:'포도'},
+            ]  // json형식으로 여러 데이터 담을 수 있음
+        }
+    })
+</script>
+</body>
+</html>

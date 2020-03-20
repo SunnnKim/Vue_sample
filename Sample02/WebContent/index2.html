@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+
+    <h3>index2.html</h3>
+    <div id="app2">
+        <h1>num : {{ num }}</h1>
+        <h1>writer : {{ writer }}</h1>
+    </div>
+    <script>
+        var router = new VueRouter({
+            mode: 'history',    // 현재 화면히스토리
+            routers: []
+        })
+        
+        new Vue({
+            router, // 파라미터 가져오기 위해 라우터 추가함
+            el:'#app2',
+            data:{
+                num : 0, writer:'d'
+            }, 
+            // 장면전환 후 자동실행되는 함수
+            mounted: function(){
+                parameter = this.$route.query
+                console.log(parameter); // json 형식으로 가져옴
+                this.num = parameter.num;   // 출력하기 0 
+                this.writer = this.$route.query.writer;
+            }
+        })
+    </script>
+</body>
+</html>

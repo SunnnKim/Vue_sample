@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <h1>{{ value }}</h1>
+        <button v-on:click="setValue('왼쪽')">클릭</button>     
+        <button @click="setValue('오른쪽')">클릭</button>     
+
+    </div>
+
+<script>
+// v-on : 이벤트 
+// v-on:click : 클릭 이벤트 
+// 또는 @click
+
+new Vue({
+    el:'#app',
+    data:{
+        value:'클릭하세요'
+    },
+    methods: {   // 해당 뷰 객체에 소속된 메소드 만들기
+        setValue( str ){
+            this.value = str + " click"    
+            // 변수를 대입할 때, 자기 자신에 속한 변수임을 표시해주어야 제대로 돌아감 
+            // this를 붙인다.
+        }
+    }
+})
+
+</script>
+</body>
+</html>

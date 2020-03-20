@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <h1>Hello {{ str }} world </h1>
+        <h2 class="{{str}}">변수를 선택자의(id,class) property값으로 사용 불가능</h2>
+        <h3 {{str}}>변수를 attribute에 넣어서 사용은 불가능</h3>
+    </div>
+    
+
+<script>
+// 올바른 예
+new Vue({
+    el:'#app',  // 객체 하나당 el 은 하나 ( 키값은 하나이기 때문에)
+    data:{
+        str:'Vue입니다.'
+    }
+});
+// 잘못된 예
+
+
+</script>
+</body>
+</html>

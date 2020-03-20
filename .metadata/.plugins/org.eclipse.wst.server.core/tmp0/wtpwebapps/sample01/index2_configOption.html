@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+</head>
+<body>
+
+    <div id="app">
+        <h1>Hello {{ str }} world </h1>
+
+    </div>
+
+
+<script>
+    // Json으로 묶은 데이터를 한번에 생성할 수 있음
+// 객체에 들어갈 데이터
+    var datas = {
+    str : 'Vue 입니다'
+}
+// Vue 객체 정보
+var vueConfigOption = {
+    el:'#app',
+    data: datas
+}
+// Vue 객체 생성
+new Vue(vueConfigOption)
+
+
+
+</script>
+</body>
+</html>

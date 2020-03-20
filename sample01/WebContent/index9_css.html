@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <p :style='redFont' style="font-size: 3em;">스타일 바인딩</p>
+
+    </div>
+
+
+<script>
+// css 바꾸기
+// :style='변수'
+new Vue({
+    el:'#app',
+    data:{
+        redFont:'color:red; background:#eaeaea; text-align:center'  // css 속성값을 바로 넣어줌
+    }
+})
+
+
+</script>
+</body>
+</html>

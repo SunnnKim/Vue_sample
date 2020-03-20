@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    
+<div id="app">
+    <h1>{{ single }}</h1>
+    <input type="checkbox" v-model='single' value="단일">Single
+    <br>
+
+    <!-- v-model 이름 맞춰주면 묶임 -->
+    <h1>{{ myradio }}</h1>
+    <input type="radio" v-model='myradio' value='one'>1
+    <input type="radio" v-model='myradio' value='two'>2
+    <input type="radio" v-model='myradio' value='three'>3
+    <input type="radio" v-model='myradio' value='four'>4
+</div>
+
+
+<script>
+// check box
+new Vue({
+    el:'#app',
+    data:{
+        single:true,    // 체크함에 따라 값이 달라짐
+        myradio:'two'   // 맨처음 값이 two로 선택되어있음   
+    }
+})
+
+
+</script>
+</body>
+</html>

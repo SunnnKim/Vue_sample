@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <ul id="app">
+        <li>
+            <a v-bind:href='url'> {{url}}</a>
+        </li>
+        <li>
+            <a :href='getUrl("naver")'>Naver</a>
+        </li>
+    </ul>
+
+
+<script>
+// link 
+
+// 1. v-bind:href='변수명' : href 링크 달기
+// 또는 :href
+new Vue({
+    el:'#app',
+    data:{
+        url: 'http://www.google.com'
+    },
+    methods: {
+        // 2. :href= 와 함수로 접근하기
+        getUrl: function( name ){
+            return 'http://' + name + ".com"
+        }
+    }
+})
+// 2. 
+
+
+</script>
+</body>
+</html>

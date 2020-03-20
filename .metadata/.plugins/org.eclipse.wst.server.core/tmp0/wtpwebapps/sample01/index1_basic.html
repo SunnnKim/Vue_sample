@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+    <h1>hello {{ str }} world</h1>
+    <p>hello {{ str }} world</p>
+    <h3>world {{ tag }}</h3>
+</div>
+<div class="btn">
+    Click
+</div>
+
+
+<script>
+// 변수를 생성
+var v = new Vue({   // Vue 객체를 생성함
+    // 키값 (element)
+    el:'#app',   // #app이라는 id를 object로 만듦 (el = element), DOM 요소를 지정
+    data:{       // 사용할 변수를 설정. 
+        str:'Vue 입니다',
+        tag:'tag 변수의 값'
+    }
+});
+// ---> Json의 형태로 이루어짐
+
+
+var btn = document.querySelector(".btn").onclick = function(){
+    v.str='글 변경'
+}
+
+</script>
+
+
+</body>
+</html>
