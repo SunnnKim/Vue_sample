@@ -14,6 +14,8 @@
     <!-- JQuery for paging -->
     <script src="../jquery/jquery.twbsPagination.js"></script>
     <script src="../jquery/jquery.twbsPagination.min.js"></script>
+    <!-- font-awesome -->
+    <script src="https://kit.fontawesome.com/e11681bffc.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -33,6 +35,8 @@
                     <td>{{ index + 1 }}</td>
                     <td v-if='data.del == 1' style="color: red;">해당 게시글은 삭제되었습니다.</td>
                     <td v-else v-on:click="detail(data.seq)">
+                        <span v-for='i in data.depth'>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <i class="fas fa-angle-double-right" v-if='data.depth > 0'></i>
                         {{ data.title }}
                     </td>
                     <td>{{ data.id }}</td>
@@ -79,7 +83,8 @@ var v = new Vue({
             { text : '제목', value:'title' },
             { text : '내용', value:'content' },
             { text : '작성자', value:'writer' }
-        ]
+        ],
+        i:0
     }, 
     methods: {
         getList: function(){
@@ -150,6 +155,7 @@ var v = new Vue({
         },
         writeBbs: function(){
             // 이동
+            location.href='./bbswrite.html'
         },
         detail:function( seq ){
             // 이동
