@@ -149,7 +149,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="D:\VueSample\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="D:\VueSample\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\sample01" path="/sample01" reloadable="true" source="org.eclipse.jst.jee.server:sample01"/></Host>
+      <Context docBase="D:\VueSample\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="D:\VueSample\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\sample01" path="/sample01" reloadable="true" source="org.eclipse.jst.jee.server:sample01"/><Context docBase="D:\VueSample\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\VueBootConnect" path="/VueBootConnect" reloadable="true" source="org.eclipse.jst.jee.server:VueBootConnect"/><Context docBase="D:\VueSample\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\VueSamples" path="/VueSamples" reloadable="true" source="org.eclipse.jst.jee.server:VueSamples"/></Host>
     </Engine>
   </Service>
 </Server>

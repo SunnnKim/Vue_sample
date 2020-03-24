@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+	<h1>
+		{{test}}
+	</h1>
+</div>
+
+<script type="text/javascript">
+
+var app = new Vue({
+	el:'#app',
+	data:{
+		test : ""
+	}
+})
+
+
+// 백엔드로 데이터 보내기
+// 1.get
+axios.get('http://localhost:3000/connect_param', // 보내고자하는 주소
+		{
+			params:{
+				title:'Vue로부터 전송'
+			}	// 보내고자하는 데이터
+		}).then(res => {
+			alert('통신성공');
+			alert(res.data);
+			app.test = res.data;
+		})
+		
+</script>
+
+
+</body>
+</html>

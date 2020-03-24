@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+	<h1>
+		{{test}}
+	</h1>
+</div>
+
+<script type="text/javascript">
+
+var app = new Vue({
+	el:'#app',
+	data:{
+		test : ""
+	}
+})
+
+
+// 백엔드로 데이터 보내기
+// 2.post
+
+// post로 보낼 경우에는 붙여주기
+var params = new URLSearchParams();
+params.append('title', 'vue로부터 post title 전송')
+params.append('content', 'vue로부터 post content 전송')
+
+axios.post('http://localhost:3000/connect_post_param', params).then(res => {
+			alert('통신성공');
+			alert(res.data);
+			app.test = res.data;
+		})
+		
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <!-- Vue -->
+        <script src="https://unpkg.com/vue/dist/vue.js"></script><!--vue-->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script><!--axios-->
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script><!--vue-router-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+ 
+</head>
+<body>
+
+    <div id="app" class="container" >
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>작성자</th>
+                    <th>
+                        <input type="text" size="50" v-model="bbsDetail.id" readonly>
+                    </th>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td>
+                        <input type="text" size="50" v-model="bbsDetail.title" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <th>조회수</th>
+                    <td>
+                        {{ bbsDetail.readcount }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>작성일</th>
+                    <td>
+                        {{ bbsDetail.wdate }}
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <textarea rows="10" cols="150" readonly>{{bbsDetail.content}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                   <td colspan="2" style="text-align: center">
+                       <button v-if="loginuser.id == bbsDetail.id" v-on:click="del(bbsDetail.seq)">삭제</button>
+                       <button v-if="loginuser.id == bbsDetail.id" v-on:click="update(bbsDetail.seq)">수정</button>
+                       <button v-on:click="reply(seq)">댓글쓰기</button>
+                       <button v-on:click="back()">뒤로가기</button>
+                   </td> 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+<script>
+    // 파라미터 받아오기 위한 라우터
+        var router = new VueRouter({
+            mode: 'history',    // 현재 화면히스토리
+            routers: []
+        })
+        
+        new Vue({
+            router, // 파라미터 가져오기 위해 라우터 추가함
+            el:'#app',
+            data:{
+                seq:'',
+                bbsDetail:[],
+                loginuser:[]
+            }, 
+            methods: {
+                back : () => {
+                    location.href="bbslist.html"
+                },
+                update: seq => {
+                    location.href="bbsupdate.html?seq="+seq;
+                },
+                del: seq => {
+                    if(confirm('삭제하시겠습니까?')){
+                        axios.get('http://localhost:3000/bbsdelete',{
+                            params:{
+                                seq: seq
+                            }
+                        }).then(
+                            res => {
+                                if( res.data == true){
+                                	alert('삭제되었습니다!');
+                                	location.href = "bbslist.html"
+                                }else{
+                                	alert('삭제 실패')
+                                }
+                            }
+                        )
+                    }
+                },
+                reply: seq => {
+
+                }
+                
+            },
+            // 장면전환 후 자동실행되는 함수
+            mounted: function(){
+                //loginuser session
+                var temp = JSON.parse(sessionStorage.getItem('loginuser'));
+				this.loginuser = temp;
+                // router
+                parameter = this.$route.query
+                console.log(parameter); // json 형식으로 가져옴
+                this.seq = parameter.seq;
+                axios.get('http://localhost:3000/getBbsDetail',{
+                    params:{
+                        seq: this.seq
+                    }
+                } ).then(
+                    res => {
+                        this.bbsDetail = res.data;
+                    }
+                )
+            }
+        })
+
+
+
+</script>
+
+
+    
+</body>
+</html>

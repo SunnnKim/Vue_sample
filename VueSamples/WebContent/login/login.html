@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="../css/login.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/e11681bffc.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div class="box">
+    <img src="../images/login.png">
+    <div class="content">
+        <span>
+            <i class="far fa-envelope"></i>
+        </span>
+        <input type="text" size="30" placeholder="Enter Id" v-model="id">
+    </div>
+    <div class="content">
+        <span>
+            <i class="fas fa-key"></i>
+        </span>
+        <input type="password" size="30" placeholder="Enter password" v-model="pwd">
+    </div>
+    <div class="btn-box">
+        <div class="btn" v-on:click="login">login</div>
+        <div>
+            <a href="./join.html">아직도 회원이 아니신가요?</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+new Vue({
+    el:".box",
+    data:{
+        id:'',
+        pwd:''
+    },
+    methods:{
+        login: function(){
+            
+            if( this.id === "" || this.pwd === "" ){
+                alert('아이디/비밀번호를 모두 입력해주세요');
+                return false;
+            }
+            
+            // axios
+            var datas = new URLSearchParams();
+            datas.append('id', this.id);
+            datas.append('pwd', this.pwd);
+            axios.post("http://localhost:3000/login", datas ).then(
+                res => {
+                    console.log(res.data);
+                    console.log(typeof res.data);
+                    if( res.data == "" ){
+                        alert('아이디/비밀번호를 확인해주세요');
+                    } else{
+                       alert( res.data.name + '님 로그인');
+                       
+                       // session -> vuex ( 세션 기한을 둘 수 있음 )
+                       //            html -> sessionStorage ( 기한 없음 )
+                       //                 -> localStorage(cookie, only String)
+                       
+                       // 저장
+                       // 1. sessionStorage
+                       sessionStorage.setItem('loginuser', JSON.stringify(res.data) ); 
+                       // json에서 string으로 변환하여 세션을 저장
+                        
+                       // 사용시에 json으로 파싱해서 사용
+                       var loginuser = sessionStorage.getItem('loginuser');
+                       var login = JSON.parse(loginuser);
+                       
+                       console.log(login);
+
+
+
+                       location.href = '../bbs/bbslist.html';
+                    }
+                }
+            )
+
+
+
+        }
+    }
+})
+
+
+
+
+
+
+
+
+
+
+//if()
+
+</script>
+
+
+
+</body>
+</html>

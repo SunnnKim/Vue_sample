@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/e11681bffc.js" crossorigin="anonymous"></script>
+    <link href="../css/join.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    
+</head>
+<body>
+    
+    <div class="box">
+        <img src="../images/join.png">
+    <div class="content">
+        <span>
+            <i class="far fa-id-card"></i>
+        </span>
+        <input type="text" size="25" placeholder="Enter ID" name="id">
+        <span class="id-check checks" v-html="check">
+            
+        </span>
+    </div>
+    <div class="content">
+        <span>
+            <i class="fas fa-key"></i>
+        </span>
+        <input type="password" size="25" placeholder="Enter password" name="pwd">
+        <span class="pwd-check checks" v-html="check2">&nbsp;</span>
+    </div>
+    <div class="content">
+        <span>
+            <i class="far fa-envelope"></i>
+        </span>
+        <input type="text" size="25" placeholder="Enter email address" name="email">
+        <span class="email-check checks" v-html="check3">&nbsp;</span>
+    </div>
+    <div class="content">
+        <span>
+            <i class="far fa-user"></i>
+        </span>
+        <input type="text" size="25" placeholder="Enter name" name="name">
+        <span class="name-check checks" v-html="check4">&nbsp;</span>
+
+    </div>
+    <div class="btn-box">
+        <div class="btn" onclick="join()">join</div>
+        <div>
+            <a href="login.html">login</a>
+        </div>
+    </div>
+
+<script>
+    // vue component
+    var check = new Vue({
+        el:'.id-check',
+        data:{
+            check: ""
+        }
+    })
+    // id check ( 정규식 + db )
+    var _id = document.querySelector('input[name=id]');     // id input value
+    var idCheck = false;    // id Check?
+    _id.onkeyup = function(){
+        var regExp = /^[A-za-z]{3,15}/g;
+        if(_id.value == "" ){
+            check.check="";
+            idCheck = false;
+            return false;
+        }
+        if( regExp.test(_id.value) == true ){
+            axios.get('http://localhost:3000/idCheck', // 보내고자하는 주소
+            {
+                params:{
+				    id:_id.value
+			    }
+            }).then(res => {
+                if( res.data == 1 ){
+                    alert('이미 존재하는 아이디');
+                    idCheck = false;
+                    check.check = '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
+                }else{
+                    idCheck = true;
+                    check.check = '<i class="far fa-check-circle" style="color:green"></i>';
+                }
+		    })
+        }else{
+            idCheck = false;
+            check.check = '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
+        }
+   }
+   
+   // password Check
+   
+   var check2 = new Vue({
+        el:'.pwd-check',
+        data:{
+            check2: ""
+        }
+    })
+
+   var pwd = document.querySelector('input[name=pwd]');
+   var pwdCheck = false;
+   pwd.onkeyup = function(){
+        if( pwd.value == "" ){
+            check2.check2="";
+            pwdCheck = false;
+            return false;
+        }
+       if(pwd.value.length >= 4){
+            pwdCheck = true;
+            check2.check2 = '<i class="far fa-check-circle" style="color:green"></i>';
+       }else{
+            pwdCheck = false;
+            check2.check2 = '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
+       }
+   }
+   
+   // email check
+   var check3 = new Vue({
+        el:'.email-check',
+        data:{
+            check3: ""
+        }
+    })
+    var email = document.querySelector('input[name=email]');
+    var emailCheck = false;
+    var regExp2 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    email.onkeyup = function(){
+        
+       if( regExp2.test(email.value) == true ){
+            emailCheck = true;
+            check3.check3 = '<i class="far fa-check-circle" style="color:green"></i>';
+       }else{
+            if( email.value == "" ){
+                check3.check3="";
+                emailCheck = false;
+                return false;
+            }   
+            emailCheck = false;
+            check3.check3 = '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
+       }
+    }
+
+// name check
+var check4 = new Vue({
+        el:'.name-check',
+        data:{
+            check4: ""
+        }
+    })
+    var _name = document.querySelector('input[name=name]');
+    var nameCheck = false;
+
+    _name.onkeyup = function(){
+       if(_name.value.length >= 2){
+            nameCheck = true;
+            check4.check4 = '<i class="far fa-check-circle" style="color:green"></i>';
+
+       }else{
+
+            if( _name.value == "" ){
+                check4.check4 = "";
+                nameCheck = false;
+                return false;
+            }
+            nameCheck = false;
+            check4.check4 = '<i class="fas fa-exclamation-triangle" style="color:red"></i>'
+       }
+    }
+
+
+
+// 회원 가입하기
+function join(){
+    if(idCheck == false){
+        alert('id를 다시 입력하세요!');
+        _id.focus();
+        return false;
+    }
+    if(pwdCheck == false){
+        alert('비밀번호를 다시 입력하세요!');
+        pwd.focus();
+        return false;
+    }
+    if(emailCheck == false){
+        alert('email를 다시 입력하세요!');
+        email.focus();
+        return false;
+    }
+    if(nameCheck == false){
+        alert('이름을 다시 입력하세요!');
+        name.focus();
+        return false;
+    }
+
+
+    // DB와 connection
+    // json data
+    // post로 보낼 경우에는 붙여주기
+    var datas = new URLSearchParams();
+    datas.append('id', _id.value );
+    datas.append('pwd', pwd.value );
+    datas.append('email', email.value );    
+    datas.append('name', _name.value );    
+    
+
+    axios.post( "http://localhost:3000/join", datas ).then( 
+        res => {
+            alert(res.data);
+            if(res.data === true ){
+                location.href = "login.html"
+            }else{
+                alert('회원가입 실패!');
+            }
+        }
+    )
+    
+
+
+}
+
+
+</script>
+
+    
+</body>
+</html>

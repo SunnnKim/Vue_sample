@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>number</th>
+                    <th>id</th>
+                    <th>pwd</th>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>auth</th>
+                </tr>
+            </thead>
+            <tbody v-for="(data, index) in dataList">
+                <tr>
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.pwd }}</td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.email }}</td>
+                    <td>{{ data.auth}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    
+    <script>
+        var app = new Vue({
+            el:"#app",
+            data:{
+                dataList: null  // 받아온 데이터를 뿌려준다
+            }
+        })
+
+        
+    axios.get('http://localhost:3000/dbtest').then(res => {
+            alert('통신성공');
+            // alert(JSON.stringify(res.data));
+            
+            // alert(res.data[0].id);	
+            // 특정 인덱스의 데이터를 가지고 오고 싶을때 
+            // res.data[indexnum].key
+            
+            // 백엔드에서 받아온 데이터를 vue data에 넣어준다
+             app.dataList = res.data;
+            })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bbs List</title>
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script><!--vue-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script><!--axios-->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script><!--vue-router-->
+    <!-- paging plugin -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- JQuery for paging -->
+    <script src="../jquery/jquery.twbsPagination.js"></script>
+    <script src="../jquery/jquery.twbsPagination.min.js"></script>
+
+</head>
+<body>
+    
+<!-- 게시판 목록 + 검색 + 페이징(플러그인) -->
+
+<div id="app" class="container" >
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+            </tr>
+            <tbody v-for="(data, index) in dataList">
+                <tr>
+                    <td>{{ index + 1 }}</td>
+                    <td v-if='data.del == 1' style="color: red;">해당 게시글은 삭제되었습니다.</td>
+                    <td v-else v-on:click="detail(data.seq)">
+                        {{ data.title }}
+                    </td>
+                    <td>{{ data.id }}</td>
+                </tr>
+            </tbody>
+        </thead>
+    </table>
+    
+    <!-- paging -->
+    <div class="row d-flex justify-content-center">
+		<nav aria-label="Page navigation example" style="text-align: center;">
+			<ul class="pagination-sm" id="pagination"></ul>
+		</nav>	
+	</div>
+    <div style="text-align:center">
+        <!-- search select-box -->
+        <select v-model="s_category">
+            <option v-for="option in options" v-bind:value="option.value"> <!--옵션하나하나당 다 들어감-->
+                {{ option.text }}
+            </option>
+        </select>
+        <!-- 검색창 -->
+        <input v-model="s_keyword" placeholder="검색어입력" size="20">
+        <!-- 버튼 -->
+        <button @click="searchBbs()">검색</button>
+        <br><br>
+        <button v-on:click="writeBbs">글추가</button>
+        
+    </div>
+</div>
+
+
+<!-- script -->
+<script>
+// Vue 생성
+var v = new Vue({
+    el:'#app',
+    data:{
+        dataList:[], // axios로 받아옴
+        s_category:'sel',   // select-box 초기값
+        s_keyword:'',
+        options:[  // option 리스트 초기화
+            { text : '선택', value:'sel' },
+            { text : '제목', value:'title' },
+            { text : '내용', value:'content' },
+            { text : '작성자', value:'writer' }
+        ]
+    }, 
+    methods: {
+        getList: function(){
+             // 글의 총 수
+            axios.get("http://localhost:3000/getBbsCount", 
+                    {
+                        params:{
+                            s_category:'',
+                            s_keyword:'',
+                            recordCountPerPage:10,  // 한 페이지당 글 수
+                            pageNumber:1
+                        }   
+                    }
+            ).then( res => {
+                
+                // 글의 총 개수를 구해 페이징 
+                loadPage( res.data );
+
+             })
+             // 글목록
+             axios.get("http://localhost:3000/getBbsPageList", 
+                    {
+                        params:{
+                            s_category:'',
+                            s_keyword:'',
+                            recordCountPerPage:10,  // 한 페이지당 글 수
+                            pageNumber:1
+                        }   
+                    }
+            ).then( res => {
+                this.dataList = res.data;
+             })
+        },
+        searchBbs: function(){
+            // 검색 후 이동
+            if( this.s_category === 'sel' ){
+                return;
+            }
+            // 글의 총수 
+            // 글의 총 수
+            axios.get("http://localhost:3000/getBbsCount", 
+            {
+                params:{
+                    s_category:this.s_category,
+                    s_keyword:this.s_keyword,
+                    recordCountPerPage:10,  // 한 페이지당 글 수
+                    pageNumber:1
+                }   
+            }
+            ).then( res => {
+                
+                // 글의 총 개수를 구해 페이징 
+                loadPage( res.data );
+
+            })
+            axios.get("http://localhost:3000/getBbsPageList", {
+                params:{
+                            s_category: this.s_category,
+                            s_keyword: this.s_keyword,
+                            recordCountPerPage:10,  // 한 페이지당 글 수
+                            pageNumber: 1
+                        }   
+            }).then( res => {
+                v.dataList = res.data;
+            })
+
+
+        },
+        writeBbs: function(){
+            // 이동
+        },
+        detail:function( seq ){
+            // 이동
+            location.href='./bbsdetail.html?seq=' + seq;
+        }
+    },
+    mounted: function() {   // 현재 페이지에 들어와있을 때 맨처음 자동적으로 호출되는 컴포넌트
+        this.getList();
+    }
+
+});
+
+
+// plugin
+function loadPage( totalCount ){
+    
+    var pageSize = 10;      
+    var pageNumber = 1;        // 현재 페이지
+    var recordCountPerPage = 10;    // 한 페이지 당 보이는 글의 개수
+
+    var totalPages = totalCount/pageSize;
+    if (totalCount%pageSize > 0) {
+        totalPages++;
+    }
+    
+    // 페이징 갱신부분
+    $('#pagination').twbsPagination('destroy'); 
+
+    // paging function
+    $('#pagination').twbsPagination({
+    totalPages: totalPages,  // 전체 page블럭 수
+    visiblePages: 10,  // 출력될 page 블럭수 상수로 지정해 줘도 되고, 변수로 지정해줘도 된다.
+    first: '<span aria-hidden="true">«</span>',
+    prev: "이전",
+    next: "다음",   
+    last: '<span aria-hidden="true">»</span>',
+    // 페이지 번호를 눌렀을 때
+    onPageClick: function (event, page) {
+            $('#page-content').text('Page ' + page);
+            axios.get("http://localhost:3000/getBbsPageList", {
+                params:{
+                            s_category: v.s_category,
+                            s_keyword: v.s_keyword,
+                            recordCountPerPage:10,  // 한 페이지당 글 수
+                            pageNumber: page
+                        }   
+            }).then( res => {
+                v.dataList = res.data;
+            })
+                    
+    }
+    });
+}
+
+
+
+
+
+</script>
+
+</body>
+</html>
